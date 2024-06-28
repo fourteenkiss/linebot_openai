@@ -33,7 +33,7 @@ client = OpenAI()
 
 def GPT_response(text):
     # 接收回應
-    response = client.Chat.Completion.create(model="gpt-4", messages=[],, temperature=1, max_tokens=256,top_p=1,frequency_penalty=0,presence_penalty=0)
+    response = client.Chat.Completion.create(model="gpt-4", messages=[],, temperature=1, max_tokens=256)
     print(response)
     # 重組回應
     answer = response['choices'][0]['text'].replace('。','')
