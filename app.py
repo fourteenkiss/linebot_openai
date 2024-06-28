@@ -8,6 +8,8 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+from openai import OpenAI
+
 #======python的函數庫==========
 import tempfile, os
 import datetime
@@ -26,10 +28,12 @@ handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 # OPENAI API Key初始化設定
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
+client = OpenAI()
+
 
 def GPT_response(text):
     # 接收回應
-    response = openai.ChatCompletion.create(model="gpt-4", prompt=text, temperature=0.5, max_tokens=500)
+    response = client.Chat.Completion.create(model="gpt-4", messages=[],, temperature=1, max_tokens=256,top_p=1,frequency_penalty=0,presence_penalty=0)
     print(response)
     # 重組回應
     answer = response['choices'][0]['text'].replace('。','')
