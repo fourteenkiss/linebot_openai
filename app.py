@@ -8,8 +8,6 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
-from openai import OpenAI
-
 #======python的函數庫==========
 import tempfile, os
 import datetime
@@ -17,7 +15,6 @@ import openai
 import time
 import traceback
 #======python的函數庫==========
-
 
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
@@ -28,12 +25,10 @@ handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 # OPENAI API Key初始化設定
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-client = OpenAI()
-
 
 def GPT_response(text):
     # 接收回應
-    response = client.Chat.Completion.create(model="gpt-4", messages=[],, temperature=1, max_tokens=256)
+    response = openai.Completion.create(model="gpt-3.5-turbo-instruct", prompt=text, temperature=0.5, max_tokens=500)
     print(response)
     # 重組回應
     answer = response['choices'][0]['text'].replace('。','')
@@ -86,5 +81,5 @@ def welcome(event):
         
 import os
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 10000))
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
