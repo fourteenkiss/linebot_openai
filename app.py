@@ -16,6 +16,22 @@ import time
 import traceback
 #======python的函數庫==========
 
+#======讓heroku不會睡著======
+import threading 
+import requests
+def wake_up_render():
+    while 1==1:
+        url = 'https://sima-wvkn.onrender.com' + 'render_wake_up'
+        res = requests.get(url)
+        if res.status_code==200:
+            print('喚醒heroku成功')
+        else:
+            print('喚醒失敗')
+        time.sleep(14*60)
+
+threading.Thread(target=wake_up_render).start()
+#======讓heroku不會睡著======
+
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 # Channel Access Token
@@ -28,7 +44,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def GPT_response(text):
     # 接收回應
-    response = openai.Completion.create(model="gpt-3.5-turbo-instruct", prompt=text, temperature=0.5, max_tokens=500)
+    response = openai.Completion.create(model="gpt-4o", prompt=text, temperature=0.5, max_tokens=500)
     print(response)
     # 重組回應
     answer = response['choices'][0]['text'].replace('。','')
